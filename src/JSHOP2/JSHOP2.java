@@ -84,6 +84,16 @@ class InternalVars
    *  atom that has been chosen to be achieved next.
   */
   TaskList tl;
+  
+  /** CT The information for the backtracking process why it has happened 
+   * Possible values are constants of JSHOP2Output
+   */
+  int bt;
+  
+  /** CT Holds preconditions of the operator
+   * 
+   */
+  Precondition btprecondition;
 }
 
 /** This class is the implementation of the JSHOP2 algorithm.
@@ -171,6 +181,13 @@ public class JSHOP2
     //-- Initialize numPlans within JSHOP2GUI
     JSHOP2GUI.setNumPlans(numPlans);
 
+    // CT Initialize JSHOP2Output and write the results to a file
+    JSHOP2Output.setPlans(planStepList);
+    try {
+		JSHOP2Output.writeAll();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
     //-- Return the found plan(s).
     return plans;
   }
@@ -265,6 +282,9 @@ public class JSHOP2
         //-- Find all the operators that achieve this primitive task.
         v.o = domain.ops[v.t.getHead().getHead()];
 
+        if(v.bt == 0 && v.o.length==0)
+        	v.bt = JSHOP2Output.NOOPERATOR;
+        
         //-- For each of these operators,
         for (v.j = 0; v.j < v.o.length; v.j++)
         {
@@ -279,6 +299,13 @@ public class JSHOP2
             //-- satisfy the precondition for this operator.
             v.p = v.o[v.j].getIterator(v.binding, 0);
 
+            //CT If no possible binding is found store this for backtracking
+            if(v.p.nextBinding() == null){
+            	v.btprecondition = v.p;        	
+            	v.bt = JSHOP2Output.NOBINDINGFORPRECOND;
+            }
+        	v.p.reset();
+            
             //-- For each such binding,
             while ((v.nextB = v.p.nextBinding()) != null)
             {
@@ -329,6 +356,10 @@ public class JSHOP2
         //-- Find all the methods that decompose this compound task.
         v.m = domain.methods[v.t.getHead().getHead()];
 
+        // CT No applicable method found	
+        if(v.bt == 0 && v.m.length==0)
+        	v.bt = JSHOP2Output.NOMETHOD;
+        
         //-- For each of these methods,
         for (v.j = 0; v.j < v.m.length; v.j++)
         {
@@ -355,6 +386,13 @@ public class JSHOP2
               //-- can satisfy the precondition for this branch of this method.
               v.p = v.m[v.j].getIterator(v.binding, v.k);
 
+              //CT No binding could satisfy the precondition of this branch
+              if(v.p.nextBinding() == null){
+              	v.btprecondition = v.p;        	
+              	v.bt = JSHOP2Output.NOBINDINGFORPRECOND;
+              }
+              v.p.reset();
+              
               //-- For each such binding,
               while ((v.nextB = v.p.nextBinding()) != null)
               {
