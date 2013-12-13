@@ -67,19 +67,22 @@ public class OutputPlanStepDetail extends OutputPlanStep {
 		returnString += "BacktrackReason: ";
 		switch(getBacktrackReason()){
 		case JSHOP2Output.NOBACKTRACKING:		
-			returnString += " ";
+			returnString += "No backtrack happened";
 			break;
-		case JSHOP2Output.NOBINDINGFORPRECOND:
-			returnString += " ";
+		case JSHOP2Output.NOBINDINGFORPRECONDOP:
+			returnString += "No binding found(Operator): No binding could satisfy the current precondition";
+			break;
+		case JSHOP2Output.NOBINDINGFORPRECONDME:
+			returnString += "No binding found(Method): No binding could satisfy the current precondition";
 			break;
 		case JSHOP2Output.NOBRANCHAPPLICABLE:
-			returnString += " ";
+			returnString += "There is no branch in the chosen method that satisfies the precondition";
 			break;
 		case JSHOP2Output.NOMETHOD:
-			returnString += " ";
+			returnString += "No method found: No methods can decompose this task";
 			break;
 		case JSHOP2Output.NOOPERATOR:
-			returnString += " ";
+			returnString += "No operator found: No operator can achieve this task";
 			break;
 			default:
 				break;

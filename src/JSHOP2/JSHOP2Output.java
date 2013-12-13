@@ -9,8 +9,9 @@ public class JSHOP2Output {
 	public static final int NOBACKTRACKING = 0;
 	public static final int NOOPERATOR = 1;
 	public static final int NOMETHOD = 2;
-	public static final int NOBINDINGFORPRECOND = 3;
-	public static final int NOBRANCHAPPLICABLE = 4;
+	public static final int NOBINDINGFORPRECONDOP = 3;
+	public static final int NOBINDINGFORPRECONDME = 4;
+	public static final int NOBRANCHAPPLICABLE = 5;
 	
 	protected static Domain plandomain;
 	private static Vector<OutputPlanStep> simplePlan;
@@ -48,7 +49,8 @@ public class JSHOP2Output {
 				
 				if(x.action=="BACKTRACKING"){
 					step.setBacktrackReason(x.backtrackReason);
-					stack.pop();					
+					if(!stack.empty())
+						stack.pop();					
 					
 					if(!lasterror){
 						if(x.backtrackPrecondition != null){
@@ -60,6 +62,10 @@ public class JSHOP2Output {
 										String currentBoundP = ((PreconditionAtomic) precond).getBoundP();
 										if(!x.state.contains(currentBoundP))
 											missingPreconditions.add(currentBoundP);
+									}
+									if(precond instanceof PreconditionCall){
+										String currentBoundT = ((PreconditionCall) precond).getBoundT();
+										missingPreconditions.add(currentBoundT);
 									}
 								}
 								step.setMissingPrecond(missingPreconditions);
@@ -134,53 +140,5 @@ public class JSHOP2Output {
 	
 	
 	public JSHOP2Output(){
-/*		try{
-	        boolean lasterror = false;
-	        
-			for(PlanStepInfo x: planList){
-				if(x.action=="STATECHANGED"){
-					pow.write("action:"+x.taskAtom+"\n");
-					String delete = "";
-					for(int i = 0; i < x.delAdd[0].size(); i++){
-						delete += x.delAdd[0].elementAt(i)+", ";
-					}
-					if(delete.length()>0)
-						delete = delete.substring(0, delete.length()-2);
-					pow.write("delete:"+delete+"\n");
-					String add = "";
-					for(int i = 0; i < x.delAdd[1].size(); i++){
-						add += x.delAdd[1].elementAt(i)+", ";
-					}
-					if(add.length()>0)
-						add = add.substring(0, add.length()-2);
-					pow.write("effect:"+add+"\n");		
-				}
-				
-				if(x.action=="BACKTRACKING"){
-					if(!lasterror){
-						btw.write("Reason:  "+x.backtrackReason+"\n");
-						btw.write("TaskAtom :"+x.taskAtom+"\n");
-						if(x.backtrackPrecondition != null){
-							try {
-								for(Precondition precond : x.backtrackPrecondition.p){
-									if(precond instanceof PreconditionAtomic){
-										String currentBoundP = ((PreconditionAtomic) precond).getBoundP();
-										if(!x.state.contains(currentBoundP))
-											btw.write(currentBoundP+" misses \n");
-									}
-								}
-
-							}catch (Exception e){}							
-						}
-						lasterror = true;
-					} 
-				} else {
-					lasterror = false;
-				}
-			//	w.write("action:"+x.backtrackReason+"\n");
-			}
-		} catch(Exception e){
-			
-		}*/
 	}
 }

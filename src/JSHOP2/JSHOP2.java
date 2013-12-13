@@ -1,5 +1,7 @@
 package JSHOP2;
 
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -86,13 +88,8 @@ class InternalVars
   TaskList tl;
   
   /** CT The information for the backtracking process why it has happened 
-   * Possible values are constants of JSHOP2Output
    */
   int bt;
-  
-  /** CT Holds preconditions of the operator
-   * 
-   */
   Precondition btprecondition;
 }
 
@@ -181,7 +178,6 @@ public class JSHOP2
     //-- Initialize numPlans within JSHOP2GUI
     JSHOP2GUI.setNumPlans(numPlans);
 
-    // CT Initialize JSHOP2Output and write the results to a file
     JSHOP2Output.setPlans(planStepList);
     try {
 		JSHOP2Output.writeAll();
@@ -298,28 +294,29 @@ public class JSHOP2
             //-- Get the iterator that iterates over all the bindings that can
             //-- satisfy the precondition for this operator.
             v.p = v.o[v.j].getIterator(v.binding, 0);
-
-            //CT If no possible binding is found store this for backtracking
+            
+            //CT
             if(v.p.nextBinding() == null){
             	v.btprecondition = v.p;        	
-            	v.bt = JSHOP2Output.NOBINDINGFORPRECOND;
+            	v.bt = JSHOP2Output.NOBINDINGFORPRECONDOP;
             }
         	v.p.reset();
-            
+        	
             //-- For each such binding,
             while ((v.nextB = v.p.nextBinding()) != null)
             {
               //-- Merge the two bindings.
               Term.merge(v.nextB, v.binding);
-
+              
+             
               //-- If the operator is applicable, apply it, and,
               if (v.o[v.j].apply(v.nextB, state, v.delAdd))
-              {
-                //-- Add the instance of the operator that achieved this task
+              {           	  
+            	//-- Add the instance of the operator that achieved this task
                 //-- to the beginning of the plan, remembering how much it
                 //-- cost.
                 double cost = currentPlan.addOperator(v.o[v.j], v.nextB);
-
+                
                 //-- Create a STATECHANGED step for the list of plan steps
                 newStep = new PlanStepInfo();
                 newStep.action = "STATECHANGED";
@@ -334,18 +331,24 @@ public class JSHOP2
                 //-- allowed, return true.
                 if (findPlanHelper(tasks) && plans.size() >= planNo)
                   return true;
-
+                                
                 //-- Remove the operator from the current plan.
                 currentPlan.removeOperator(cost);
-              }
-
+              } 
               //-- Undo the changes that were the result of applying this
               //-- operator, because we are backtracking here.
               state.undo(v.delAdd);
             }
+            
+            //CT
+            if(v.nextB == null){
+            	v.btprecondition = v.p;        	
+            	v.bt = JSHOP2Output.NOBINDINGFORPRECONDOP;
+            }
+        	v.p.reset();
           }
         }
-
+        
         //-- Insert the task we chose to achieve first back where it was,
         //-- because we couldn't achieve it.
         v.tl.undo();
@@ -356,7 +359,7 @@ public class JSHOP2
         //-- Find all the methods that decompose this compound task.
         v.m = domain.methods[v.t.getHead().getHead()];
 
-        // CT No applicable method found	
+        // CT	
         if(v.bt == 0 && v.m.length==0)
         	v.bt = JSHOP2Output.NOMETHOD;
         
@@ -386,10 +389,10 @@ public class JSHOP2
               //-- can satisfy the precondition for this branch of this method.
               v.p = v.m[v.j].getIterator(v.binding, v.k);
 
-              //CT No binding could satisfy the precondition of this branch
+              //CT
               if(v.p.nextBinding() == null){
               	v.btprecondition = v.p;        	
-              	v.bt = JSHOP2Output.NOBINDINGFORPRECOND;
+              	v.bt = JSHOP2Output.NOBINDINGFORPRECONDME;
               }
               v.p.reset();
               
@@ -421,7 +424,7 @@ public class JSHOP2
                 if (findPlanHelper(v.tl) && plans.size() >= planNo)
                   //-- A full plan is found, return true.
                   return true;
-
+          
                 //-- The further branches of this method must NOT be considered
                 //-- even if this branch fails because there has been at least
                 //-- one satisfier for this branch of the method. Set this
@@ -434,6 +437,9 @@ public class JSHOP2
                 v.tl.undo();
               }
             }
+            // CT	
+            if(v.bt == 0)
+            	v.bt = JSHOP2Output.NOBRANCHAPPLICABLE;
           }
         }
       }
@@ -441,7 +447,11 @@ public class JSHOP2
       //-- Create a BACKTRACKING step for the list of plan steps
       newStep = new PlanStepInfo();
       newStep.action = "BACKTRACKING";
+      newStep.state = state.getState();
       newStep.taskAtom = v.t;
+      //CT
+      newStep.backtrackReason = v.bt;
+      newStep.backtrackPrecondition = v.btprecondition;
       planStepList.add(newStep);
     }
 
