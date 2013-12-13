@@ -3,8 +3,8 @@
   package JSHOP2;
 
   import java.io.IOException;
-  import java.util.LinkedList;
-  import java.util.Vector;
+import java.util.LinkedList;
+import java.util.Vector;
 
 import java.io.InputStream;
 import antlr.TokenStreamException;
@@ -41,6 +41,7 @@ public JSHOP2Lexer(Reader in) {
 public JSHOP2Lexer(InputBuffer ib) {
 	this(new LexerSharedInputState(ib));
 }
+@SuppressWarnings("unchecked")
 public JSHOP2Lexer(LexerSharedInputState state) {
 	super(state);
 	caseSensitiveLiterals = false;

@@ -64,4 +64,9 @@ public class PreconditionAtomic extends Precondition
     //-- Forget all the subsequent bindings.
     boundP = p;
   }
+  
+  // CT
+  public String getBoundP(){
+	  return boundP.toString();
+  }
 }

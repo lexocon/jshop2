@@ -59,7 +59,8 @@ public class LogicalExpressionConjunction extends LogicalExpression
 
     //-- Defining two arrays for storing the iterators and bindings for each
     //-- conjunct.
-    s += "{" + endl + "\tPrecondition[] p;" + endl + "\tTerm[][] b;" + endl;
+    //s += "{" + endl + "\tPrecondition[] p;" + endl + "\tTerm[][] b;" + endl;
+    s += "{" + endl + "\t" + endl + "\tTerm[][] b;" + endl;
 
     //-- The constructor of the class.
     s += endl+ "\tpublic Precondition" + cnt + "(Term[] unifier)" + endl;

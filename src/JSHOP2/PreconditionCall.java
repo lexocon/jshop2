@@ -72,4 +72,9 @@ public class PreconditionCall extends Precondition
     //-- Undo the bindings.
     boundT = term;
   }
+  
+  // CT
+  public String getBoundT(){
+	  return boundT.toString();
+  }
 }

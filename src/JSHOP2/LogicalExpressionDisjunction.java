@@ -60,7 +60,8 @@ public class LogicalExpressionDisjunction extends LogicalExpression
 
     //-- Defining two arrays for storing the iterators for each disjunct and
     //-- the current binding.
-    s += "{" + endl + "\tPrecondition[] p;" + endl + "\tTerm[] b;" + endl;
+    //s += "{" + endl + "\tPrecondition[] p;" + endl + "\tTerm[] b;" + endl;
+    s += "{" + endl + "\t" + endl + "\tTerm[] b;" + endl;
 
     //-- Defining an integer to keep track of which disjunct has already been
     //-- considered.

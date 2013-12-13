@@ -3,9 +3,6 @@ package JSHOP2;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import JSHOP2.JSHOP2Output;
-import JSHOP2.Precondition;
-
 
 /**
  * This object encapsulates the information pertaining to a single step in the planning
@@ -91,7 +88,6 @@ public class PlanStepInfo {
     //CT: String to keep track of the reason for backtracking
     public int backtrackReason;
     public Precondition backtrackPrecondition;
-    
     
     public PlanStepInfo() {
     	taskAtom = null;

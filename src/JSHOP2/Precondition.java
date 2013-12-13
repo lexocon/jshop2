@@ -39,6 +39,11 @@ public abstract class Precondition
   */
   private boolean firstCall;
 
+  /* CT Removed the Property in PreconditionConjunction/Disjunction to have this variable accessible for backtracking
+   * 
+   */
+  public Precondition[] p;
+  
   /** This abstract function binds the logical expression to a given binding.
    *
    *  @param binding
