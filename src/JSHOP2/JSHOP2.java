@@ -181,11 +181,7 @@ public class JSHOP2
     JSHOP2GUI.setNumPlans(numPlans);
 
     JSHOP2Output.setPlans(planStepList);
-    try {
-		JSHOP2Output.writeAll();
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
+
     //-- Return the found plan(s).
     return plans;
   }
@@ -298,10 +294,10 @@ public class JSHOP2
             v.p = v.o[v.j].getIterator(v.binding, 0);
             
             if(v.p.nextBinding() == null){
-            	v.btprecondition = v.p;        	
-            	v.bt = JSHOP2Output.BacktrackReason.NOBINDINGFORPRECONDOP;
-            }
-        	v.p.reset();
+              v.btprecondition = v.p;        	
+              v.bt = JSHOP2Output.BacktrackReason.NOBINDINGFORPRECONDOP;
+              }
+            v.p.reset();
         	
             //-- For each such binding,
             while ((v.nextB = v.p.nextBinding()) != null)
@@ -342,10 +338,10 @@ public class JSHOP2
             }
             
             if(v.nextB == null){
-            	v.btprecondition = v.p;        	
-            	v.bt = JSHOP2Output.BacktrackReason.NOBINDINGFORPRECONDOP;
-            }
-        	v.p.reset();
+              v.btprecondition = v.p;        	
+              v.bt = JSHOP2Output.BacktrackReason.NOBINDINGFORPRECONDOP;
+              }
+            v.p.reset();
           }
         }
         
@@ -389,9 +385,9 @@ public class JSHOP2
               v.p = v.m[v.j].getIterator(v.binding, v.k);
 
               if(v.p.nextBinding() == null){
-              	v.btprecondition = v.p;        	
-              	v.bt = JSHOP2Output.BacktrackReason.NOBINDINGFORPRECONDME;
-              }
+                v.btprecondition = v.p;        	
+                v.bt = JSHOP2Output.BacktrackReason.NOBINDINGFORPRECONDME;
+                }
               v.p.reset();
               
               //-- For each such binding,
@@ -436,7 +432,7 @@ public class JSHOP2
               }
             }
             if(v.bt == JSHOP2Output.BacktrackReason.NOBACKTRACKING)
-            	v.bt = JSHOP2Output.BacktrackReason.NOBRANCHAPPLICABLE;
+              v.bt = JSHOP2Output.BacktrackReason.NOBRANCHAPPLICABLE;
           }
         }
       }
