@@ -630,7 +630,7 @@ public class InternalDomain
 
     //-- Pass the domain description and the initial state of the world to the
     //-- JSHOP2 algorithm.
-    s += endl + "\t\tJSHOP2.initialize(d, s);" + endl + endl;
+    s += endl + "\t\tJSHOP2.getInstance().initialize(d, s);" + endl + endl;
 
     //-- Define the task list variable and the thread that solves the problems.
     s += "\t\tTaskList tl;" + endl + "\t\tSolverThread thread;" + endl + endl;

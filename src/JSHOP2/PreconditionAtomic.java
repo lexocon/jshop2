@@ -59,13 +59,14 @@ public class PreconditionAtomic extends Precondition
   protected void resetHelper()
   {
     //-- Reset the iterator.
-    e = JSHOP2.getState().iterator(p.getHead());
+    e = JSHOP2.getInstance().getState().iterator(p.getHead());
 
     //-- Forget all the subsequent bindings.
     boundP = p;
   }
   
-  // CT
+  /** Helper method to return the bound Preconditions
+   */
   public String getBoundP(){
 	  return boundP.toString();
   }

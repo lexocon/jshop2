@@ -107,9 +107,9 @@ public class TaskAtom extends CompileTimeObject
   {
     String s;
     if (primitive)
-      s = head.toString(JSHOP2.getDomain().primitiveTasks);
+      s = head.toString(JSHOP2.getInstance().getDomain().primitiveTasks);
     else
-      s = head.toString(JSHOP2.getDomain().compoundTasks);
+      s = head.toString(JSHOP2.getInstance().getDomain().compoundTasks);
 
     if (immediate)
       return "(:immediate " + s.substring(1);

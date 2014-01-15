@@ -1,7 +1,5 @@
 package JSHOP2;
 
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -103,39 +101,43 @@ class InternalVars
 */
 public class JSHOP2
 {
+  /** Singletonpattern for removing the static attributes
+   */
+  private static JSHOP2 JSHOP2Singleton;
+  
   /** The plan currently being constructed.
   */
-  private static Plan currentPlan;
+  private Plan currentPlan;
 
   /** The domain description for the planning problem.
   */
-  private static Domain domain;
+  private Domain domain;
 
   /** The maximum number of plans to be returned.
   */
-  private static int planNo;
+  private int planNo;
 
   /** The plans are stored in this variable as a list of type
    *  <code>Plan</code>.
   */
-  private static LinkedList<Plan> plans;
+  private LinkedList<Plan> plans;
 
   /** The current state of the world.
   */
-  private static State state;
+  private State state;
 
   /** The task list to be achieved.
   */
-  private static TaskList tasks;
+  private TaskList tasks;
 
   /** An <code>ArrayList</code> that represents the steps taken to find every
    *  plan.
   */
-  private static ArrayList<PlanStepInfo> planStepList;
+  private ArrayList<PlanStepInfo> planStepList;
 
   /** Incremented whenever a plan is found. Passed to JSHOP2GUI.
   */
-  private static int numPlans;
+  private int numPlans;
 
   /** This function finds plan(s) for a given initial task list.
    *
@@ -146,7 +148,7 @@ public class JSHOP2
    *  @return
    *          0 or more plans that achieve the given task list.
   */
-  public static LinkedList<Plan> findPlans(TaskList tasksIn, int planNoIn)
+  public LinkedList<Plan> findPlans(TaskList tasksIn, int planNoIn)
   {
     //-- Initialize the plan list to an empty one.
     plans = new LinkedList<Plan>();
@@ -199,7 +201,7 @@ public class JSHOP2
    *          <code>true</code> if a plan is found, <code>false</code>
    *          otherwise.
   */
-  private static boolean findPlanHelper(TaskList chosenTask)
+  private boolean findPlanHelper(TaskList chosenTask)
   {
     //-- The local variables we need every time this function is called.
     InternalVars v = new InternalVars();
@@ -319,7 +321,7 @@ public class JSHOP2
                 newStep.action = "STATECHANGED";
                 newStep.taskAtom = v.t;
                 newStep.delAdd = v.delAdd;
-                newStep.operatorInstance = v.o[v.j].getHead().applySubstitution(v.nextB).toString(JSHOP2.getDomain().getPrimitiveTasks());
+                newStep.operatorInstance = v.o[v.j].getHead().applySubstitution(v.nextB).toString(getDomain().getPrimitiveTasks());
                 planStepList.add(newStep);
 
                 //-- Recursively call the same function to achieve the
@@ -456,7 +458,7 @@ public class JSHOP2
    *  @return
    *          the current planning domain.
   */
-  public static Domain getDomain()
+  public Domain getDomain()
   {
     return domain;
   }
@@ -466,7 +468,7 @@ public class JSHOP2
    *  @return
    *          the current state of the world.
   */
-  public static State getState()
+  public State getState()
   {
     return state;
   }
@@ -478,9 +480,21 @@ public class JSHOP2
    *  @param stateIn
    *          the initial state of the world.
   */
-  public static void initialize(Domain domainIn, State stateIn)
+  public void initialize(Domain domainIn, State stateIn)
   {
     domain = domainIn;
     state = stateIn;
+  }
+  
+  /** Returns the instance of the JSHOP2 singleton or creates one if it not exists
+   *
+   * @return
+   *          the singleton instance
+   */
+  public static JSHOP2 getInstance() {
+    if (JSHOP2Singleton == null) {
+      JSHOP2Singleton = new JSHOP2();
+    }
+    return JSHOP2Singleton;
   }
 }

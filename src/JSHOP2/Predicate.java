@@ -258,7 +258,7 @@ public class Predicate extends CompileTimeObject
 
     //-- Find out what the String representation of the head of this predicate
     //-- is.
-    String s = "(" + JSHOP2.getDomain().getConstant(head);
+    String s = "(" + JSHOP2.getInstance().getDomain().getConstant(head);
 
     //-- If the argument list is a list term (which it should be usually):
     if (param instanceof TermList)

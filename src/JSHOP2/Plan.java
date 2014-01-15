@@ -100,7 +100,7 @@ public class Plan
     String retVal = "Plan cost: " + cost + endl + endl;
 
     //-- Get the names of the operators in this domain.
-    String[] primitiveTasks = JSHOP2.getDomain().getPrimitiveTasks();
+    String[] primitiveTasks = JSHOP2.getInstance().getDomain().getPrimitiveTasks();
 
     //-- Iterate over the operator instances in the plan and print them.
     for (Predicate p : ops)

@@ -55,7 +55,7 @@ public class SolverThread extends Thread
   public void run()
   {
     //-- Solve the planning problem.
-    plans = JSHOP2.findPlans(tl, planNo);
+    plans = JSHOP2.getInstance().findPlans(tl, planNo);
   }
 }
 

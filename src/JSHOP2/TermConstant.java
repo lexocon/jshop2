@@ -119,6 +119,6 @@ public class TermConstant extends Term
   */
   public String toString()
   {
-    return JSHOP2.getDomain().getConstant(index);
+    return JSHOP2.getInstance().getDomain().getConstant(index);
   }
 }
